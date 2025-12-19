@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wellucky Investment ROI Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-100 min-h-screen flex items-center justify-center p-4">
+
+    <div class="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden">
+        
+        <div class="bg-blue-600 p-6 text-white text-center">
+            <h1 class="text-2xl font-bold">💰 ROI Calculator</h1>
+            <p class="text-blue-100 text-sm mt-1">Calculate your Granny Flat Investment Return</p>
+        </div>
+
+        <div class="p-6 space-y-4">
+            
+            <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2">Total Project Cost ($)</label>
+                <input type="number" id="totalCost" placeholder="e.g. 35000" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                <p class="text-xs text-gray-400 mt-1">Include house price, shipping & installation.</p>
+            </div>
+
+            <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2">Estimated Weekly Rent ($)</label>
+                <input type="number" id="weeklyRent" placeholder="e.g. 400" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                <p class="text-xs text-gray-500 mt-1 bg-blue-50 p-2 rounded border border-blue-100">
+                    💡 <b>Market Insight:</b> Typical 2-bed granny flat rent: 
+                    <span class="font-bold text-blue-600">$350 - $600</span> (varies by location).
+                </p>
+            </div>
+
+            <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2">Occupancy Rate (%)</label>
+                <input type="number" id="occupancyRate" value="95" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                <p class="text-xs text-gray-500 mt-1 bg-green-50 p-2 rounded border border-green-100">
+                    🏠 <b>Long-term:</b> 95%-100% <br>
+                    ✈️ <b>Airbnb:</b> 60%-80%
+                </p>
+            </div>
+
+            <button onclick="calculateROI()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg shadow-lg transform active:scale-95 transition-all">
+                Calculate My Profit 🚀
+            </button>
+
+        </div>
+
+        <div id="resultArea" class="hidden bg-slate-50 p-6 border-t border-gray-100">
+            <div class="grid grid-cols-2 gap-4 text-center">
+                
+                <div class="p-3 bg-white rounded-lg shadow-sm border border-gray-200">
+                    <p class="text-xs text-gray-500 uppercase">Annual Income</p>
+                    <p class="text-xl font-bold text-green-600" id="annualIncome">-</p>
+                </div>
+
+                <div class="p-3 bg-white rounded-lg shadow-sm border border-gray-200">
+                    <p class="text-xs text-gray-500 uppercase">Payback Period</p>
+                    <p class="text-xl font-bold text-blue-600" id="paybackPeriod">-</p>
+                </div>
+
+            </div>
+
+            <div class="mt-4 text-center">
+                <p class="text-gray-600 text-sm">Annual ROI: <span id="roiPercentage" class="font-bold text-blue-600">0%</span></p>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-gray-200 text-center">
+                <p class="text-sm text-gray-500 mb-2">Want a precise quote?</p>
+                <a href="mailto:monica@wellucky.com" class="inline-block px-6 py-2 bg-green-500 text-white text-sm font-semibold rounded-full hover:bg-green-600 transition">Contact Wellucky Now</a>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function calculateROI() {
+            // 1. 获取用户输入
+            const cost = parseFloat(document.getElementById('totalCost').value);
+            const rent = parseFloat(document.getElementById('weeklyRent').value);
+            const occupancy = parseFloat(document.getElementById('occupancyRate').value);
+
+            // 简单验证
+            if (!cost || !rent || !occupancy) {
+                alert("Please fill in all fields! (请输入完整数值)");
+                return;
+            }
+
+            // 2. 核心数学公式
+            const annualIncome = rent * 52 * (occupancy / 100);
+            const yearsToPayback = cost / annualIncome;
+            const roi = (annualIncome / cost) * 100;
+
+            // 3. 显示结果
+            document.getElementById('annualIncome').innerText = '$' + Math.round(annualIncome).toLocaleString();
+            
+            let paybackText = "";
+            if (yearsToPayback < 1) {
+                paybackText = Math.round(yearsToPayback * 12) + " Months";
+            } else {
+                paybackText = yearsToPayback.toFixed(1) + " Years";
+            }
+            document.getElementById('paybackPeriod').innerText = paybackText;
+            document.getElementById('roiPercentage').innerText = roi.toFixed(1) + "%";
+            document.getElementById('resultArea').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
